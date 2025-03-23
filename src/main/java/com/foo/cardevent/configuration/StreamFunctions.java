@@ -1,16 +1,15 @@
 package com.foo.cardevent.configuration;
 
+import com.foo.cardevent.core.model.CardEvent;
+import com.foo.cardevent.core.model.CardEventType;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
+
 import java.time.Instant;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import com.foo.cardevent.core.model.CardEvent;
-import com.foo.cardevent.core.model.CardEventType;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @Slf4j
 @Configuration
