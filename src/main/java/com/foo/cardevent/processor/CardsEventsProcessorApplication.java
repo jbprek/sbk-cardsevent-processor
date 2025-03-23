@@ -2,12 +2,14 @@ package com.foo.cardevent.processor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
+@ConfigurationPropertiesScan
 @SpringBootApplication
-public class CardsEventsProcessorJsonApplication {
+public class CardsEventsProcessorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CardsEventsProcessorJsonApplication.class, args);
+		SpringApplication.run(CardsEventsProcessorApplication.class, args);
 	}
 
 }

@@ -1,0 +1,38 @@
+server:
+  port: 10001
+spring:
+  application:
+    name: sbk-card-event-processor-json
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: card-events-json-group-1
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+
+    listener:
+      concurrency: 3
+      ack-mode: manual
+
+
+logging:
+  level:
+    org:
+      springframework: INFO
+      apache:
+        kafka: DEBUG
+      springframework.kafka: DEBUG
+
+
+application:
+  kafka:
+    topic: cards-events-json-topic
+    consumer-group: card-events-json-group-1
