@@ -1,4 +1,4 @@
-package com.foo.cardevent.processor.model;
+package com.foo.cardevent.core.model;
 
 public enum CardEventType {
     CARD_ATM_DEPOSIT,

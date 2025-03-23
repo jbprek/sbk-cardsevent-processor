@@ -1,6 +1,6 @@
-package com.foo.cardevent.processor.producer.controller;
+package com.foo.cardevent.controller;
 
-import com.foo.cardevent.processor.model.CardEventType;
+import com.foo.cardevent.core.model.CardEventType;
 
 /**
  * Card Event

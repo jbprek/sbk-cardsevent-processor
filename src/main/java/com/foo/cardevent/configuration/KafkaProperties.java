@@ -1,4 +1,4 @@
-package com.foo.cardevent.processor.configuration;
+package com.foo.cardevent.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
