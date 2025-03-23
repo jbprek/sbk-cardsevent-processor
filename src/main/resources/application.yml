@@ -18,6 +18,14 @@ spring:
       definition: logCardEvents # processCardEvents #;other functions
 
     stream:
+      bindings:
+        logCardEvents-in-0:
+          destination: cards-events-json-topic
+          group: card-events-json-group-2
+          content-type: application/json
+        cardEvents-out-0:
+          destination: cards-events-json-topic
+          content-type: application/json
       kafka:
         binder:
           brokers: localhost:9092
@@ -28,13 +36,6 @@ spring:
               start-offset: earliest
               trusted-packages:
                 - com.foo.cardevent.core.model
-
-      bindings:
-        logCardEvents-in-0:
-          destination: cards-events-json-topic
-          group: card-events-json-group-2
-          content-type: application/json
-
 
 logging:
   level:

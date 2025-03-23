@@ -24,7 +24,7 @@ public class ApiController {
                 eventInput.cardEventType(),
                 eventInput.amount(),
                 Instant.now().toEpochMilli());
-        this.streamBridge.send("logCardEvents-in-0", event);
+        this.streamBridge.send("cardEvents-out-0", event);
     }   
 
 }

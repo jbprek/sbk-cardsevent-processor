@@ -3,6 +3,7 @@ package com.foo.cardevent.configuration;
 import com.foo.cardevent.core.model.CardEvent;
 import com.foo.cardevent.core.model.CardEventType;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Instant;
@@ -20,7 +21,7 @@ public class StreamFunctions {
     /**
      * Consumes card events and logs them
      */
-    // @Bean
+    @Bean
     public Consumer<CardEvent> logCardEvents() {
         return cardEvent -> log.info("Received card event: {}", cardEvent);
     }
