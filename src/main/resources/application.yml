@@ -9,6 +9,12 @@ spring:
       definition: logCardEvents # processCardEvents #;other functions
 
     stream:
+      bindings:
+        logCardEvents-in-0:
+          destination: cards-events-avro-topic
+          group: card-events-avro-group-2
+          content-type: application/*+avro
+
       kafka:
         binder:
           brokers: localhost:9092
@@ -26,12 +32,6 @@ spring:
           logCardEvents-in-0:
             consumer:
               start-offset: earliest
-
-      bindings:
-        logCardEvents-in-0:
-          destination: cards-events-avro-topic
-          group: card-events-avro-group-2
-          content-type: application/*+avro
 
 
 

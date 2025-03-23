@@ -16,7 +16,7 @@ import java.time.Instant;
 @RequestMapping("/api")
 public class ApiController {
 
-    private static final String CARD_EVENTS_BINDING = "logCardEvents-out-0";
+    private static final String CARD_EVENTS_BINDING = "logCardEvents-in-0";
 
     private final CardEventMapper cardEventMapper;
     private final StreamBridge streamBridge;
