@@ -17,6 +17,7 @@ spring:
           json:
             trusted:
               packages: com.foo.cardevent.core.model
+      auto-offset-reset: earliest
 
 
     producer:

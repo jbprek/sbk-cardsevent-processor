@@ -1,4 +1,4 @@
-package com.foo.cardevent.core;
+package com.foo.cardevent.core.service;
 
 import com.foo.cardevent.core.model.CardEvent;
 

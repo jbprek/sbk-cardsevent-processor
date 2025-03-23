@@ -13,11 +13,7 @@ public record CardEvent(
 
     @Override
     public String toString() {
-        return "CardEvent{" +
-                "accountId=" + accountId +
-                ", cardEventType=" + cardEventType +
-                ", amount=" + amount +
-                ", timestamp=" + Instant.ofEpochMilli(timestamp) +
-                '}';
+        return "CardEvent{accountId=%d, cardEventType=%s, amount=%.2f, timestamp=%s}"
+                .formatted(accountId, cardEventType, amount, Instant.ofEpochMilli(timestamp));
     }
 }
