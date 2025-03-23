@@ -8,4 +8,4 @@
 - feature/json-kafka-binder using Json Serdes
 
 - feature/avro-simple using Avro and Confluent registry WIP
-- feature/json-kafka-binder using Avro
+- feature/avro-kafka-binder using Avro
