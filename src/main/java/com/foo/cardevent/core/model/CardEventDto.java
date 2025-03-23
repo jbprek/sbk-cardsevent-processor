@@ -5,7 +5,7 @@ import java.time.Instant;
 /**]
  * Card Event
  */
-public record CardEvent(
+public record CardEventDto(
         long accountId,
         CardEventType cardEventType,
         double amount,

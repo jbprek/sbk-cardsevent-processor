@@ -2,28 +2,30 @@ server:
   port: 10001
 spring:
   application:
-    name: sbk-card-event-processor-json
+    name: sbk-card-event-processor-avro
+
+application:
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstap-servers: localhost:9092
+    schema-registry-url: http://localhost:8081
+    producer:
+      bootstrap-servers: ${application.kafka.bootstap-servers}
+      schema-registry-url: ${application.kafka.schema-registry-url}
+      topic: cards-events-avro-topic
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
 
     consumer:
-#      group-id: card-events-json-group-1
-#      auto-offset-reset: earliest
+      bootstrap-servers: ${application.kafka.bootstap-servers}
+      schema-registry-url: ${application.kafka.schema-registry-url}
+      topic: cards-events-avro-topic
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: com.foo.cardevent.core.model
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+
+      group-id: cards-events-avro-group-1
       auto-offset-reset: earliest
-
-
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      acks: all
 
 #    listener:
 #      concurrency: 3
@@ -38,7 +40,4 @@ logging:
       springframework.kafka: INFO
 
 
-application:
-  kafka:
-    topic: cards-events-json-topic
-    consumer-group: card-events-json-group-1
+

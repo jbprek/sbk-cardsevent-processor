@@ -1,6 +1,8 @@
 package com.foo.cardevent.controller;
 
-import com.foo.cardevent.core.model.CardEvent;
+import com.foo.cardevent.core.model.CardEventDto;
+import com.foo.cardevent.mapping.model.service.CardEventMapper;
+import com.other.cardevent.avro.CardEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,16 +17,13 @@ import java.time.Instant;
 @RequestMapping("/api")
 public class ApiController {
 
-    
-	private final KafkaTemplate<Object, Object> template;
+	private final KafkaTemplate<String, CardEvent> template;
+    private final CardEventMapper cardEventMapper;
 
     @PostMapping
     public void  sendMessage(@RequestBody CardEventInput eventInput) {
-        var event = new CardEvent(eventInput.accountId(),
-                eventInput.cardEventType(),
-                eventInput.amount(),
-                Instant.now().toEpochMilli());
-        this.template.send("cards-events-json-topic", event);
+        var event = cardEventMapper.fromInput(eventInput);
+        this.template.send("cards-events-avro-topic", event);
     }   
 
 }

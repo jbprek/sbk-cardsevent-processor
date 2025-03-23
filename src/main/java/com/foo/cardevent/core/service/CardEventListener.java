@@ -1,7 +1,9 @@
 package com.foo.cardevent.core.service;
 
-import com.foo.cardevent.core.model.CardEvent;
+import com.foo.cardevent.core.model.CardEventDto;
 
+import com.foo.cardevent.mapping.model.service.CardEventMapper;
+import com.other.cardevent.avro.CardEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,15 +17,13 @@ import org.springframework.stereotype.Component;
 
 public class CardEventListener {
 
-
     private final KafkaProperties kafkaProperties;
+    private final CardEventMapper cardEventMapper;
 
 
-    // @KafkaListener(topics = "#{@kafkaProperties.topic}", groupId = "#{@kafkaProperties.consumerGroup}", containerFactory = "kafkaListenerContainerFactory")
-
-    @KafkaListener(topics = "cards-events-json-topic", groupId = "cards-events-json-group-1")
-    public void listen(CardEvent cardEvent) {
-        log.info("Received Card Event: " + cardEvent);
-        // Process the CardEvent here
+    @KafkaListener(topics = "cards-events-avro-topic", groupId = "cards-events-avro-group-1")
+    public void listen(CardEvent cardEventDto) {
+        var record = cardEventMapper.toRecord(cardEventDto);
+        log.info("Received Card Event: " + record);
     }
 }
