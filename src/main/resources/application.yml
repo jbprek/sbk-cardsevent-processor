@@ -4,30 +4,36 @@ spring:
   application:
     name: sbk-card-event-processor-json
 
-  kafka:
-    bootstrap-servers: localhost:9092
 
-    consumer:
-#      group-id: card-events-json-group-1
-#      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: com.foo.cardevent.core.model
-      auto-offset-reset: earliest
+  # JSON configuration
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+      fail-on-empty-beans: false
+    deserialization:
+      fail-on-unknown-properties: false
 
+  cloud:
+    function:
+      definition: logCardEvents # processCardEvents #;other functions
 
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      acks: all
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+          autoCreateTopics: false
+        bindings:
+          logCardEvents-in-0:
+            consumer:
+              start-offset: earliest
+              trusted-packages:
+                - com.foo.cardevent.core.model
 
-#    listener:
-#      concurrency: 3
-#      ack-mode: manual
+      bindings:
+        logCardEvents-in-0:
+          destination: cards-events-json-topic
+          group: card-events-json-group-2
+          content-type: application/json
 
 
 logging:
@@ -38,7 +44,3 @@ logging:
       springframework.kafka: INFO
 
 
-application:
-  kafka:
-    topic: cards-events-json-topic
-    consumer-group: card-events-json-group-1

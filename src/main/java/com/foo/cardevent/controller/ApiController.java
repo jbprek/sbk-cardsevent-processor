@@ -2,7 +2,7 @@ package com.foo.cardevent.controller;
 
 import com.foo.cardevent.core.model.CardEvent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +15,8 @@ import java.time.Instant;
 @RequestMapping("/api")
 public class ApiController {
 
-    
-	private final KafkaTemplate<Object, Object> template;
+
+    private final StreamBridge streamBridge;
 
     @PostMapping
     public void  sendMessage(@RequestBody CardEventInput eventInput) {
@@ -24,7 +24,7 @@ public class ApiController {
                 eventInput.cardEventType(),
                 eventInput.amount(),
                 Instant.now().toEpochMilli());
-        this.template.send("cards-events-json-topic", event);
+        this.streamBridge.send("logCardEvents-in-0", event);
     }   
 
 }
