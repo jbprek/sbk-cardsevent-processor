@@ -1,6 +1,7 @@
 package com.foo.cardevent.controller;
 
-import com.foo.cardevent.core.model.CardEvent;
+import com.foo.cardevent.core.model.CardEventRecord;
+import com.foo.cardevent.mapping.model.service.CardEventMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,16 +16,26 @@ import java.time.Instant;
 @RequestMapping("/api")
 public class ApiController {
 
+    private static final String CARD_EVENTS_BINDING = "logCardEvents-out-0";
 
+    private final CardEventMapper cardEventMapper;
     private final StreamBridge streamBridge;
 
     @PostMapping
     public void  sendMessage(@RequestBody CardEventInput eventInput) {
-        var event = new CardEvent(eventInput.accountId(),
-                eventInput.cardEventType(),
-                eventInput.amount(),
-                Instant.now().toEpochMilli());
-        this.streamBridge.send("logCardEvents-in-0", event);
+        var event = cardEventMapper.fromInput(eventInput);
+
+        // Check if event is not null before sending
+        if (event != null) {
+            boolean result = this.streamBridge.send(CARD_EVENTS_BINDING, event);
+
+            if (!result) {
+                throw new RuntimeException("Failed to send message to " + CARD_EVENTS_BINDING);
+            }
+        } else {
+            throw new IllegalArgumentException("Cannot send null event");
+        }
+
     }   
 
 }

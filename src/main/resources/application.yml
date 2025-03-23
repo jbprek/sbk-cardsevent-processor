@@ -2,16 +2,7 @@ server:
   port: 10001
 spring:
   application:
-    name: sbk-card-event-processor-json
-
-
-  # JSON configuration
-  jackson:
-    serialization:
-      write-dates-as-timestamps: true
-      fail-on-empty-beans: false
-    deserialization:
-      fail-on-unknown-properties: false
+    name: sbk-card-event-processor-avro-scstreams
 
   cloud:
     function:
@@ -22,18 +13,26 @@ spring:
         binder:
           brokers: localhost:9092
           autoCreateTopics: false
+        producer-properties:
+          schema.registry.url: http://localhost:8081
+          key.serializer: org.apache.kafka.common.serialization.StringSerializer
+          value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+        consumer-properties:
+          schema.registry.url: http://localhost:8081
+          key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+          value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+          specific.avro.reader: true
         bindings:
           logCardEvents-in-0:
             consumer:
               start-offset: earliest
-              trusted-packages:
-                - com.foo.cardevent.core.model
 
       bindings:
         logCardEvents-in-0:
-          destination: cards-events-json-topic
-          group: card-events-json-group-2
-          content-type: application/json
+          destination: cards-events-avro-topic
+          group: card-events-avro-group-2
+          content-type: application/*+avro
+
 
 
 logging:

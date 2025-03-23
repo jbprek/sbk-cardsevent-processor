@@ -1,0 +1,30 @@
+{
+  "type": "record",
+  "name": "CardEvent",
+  "namespace": "com.other.cardevent.avro",
+  "fields": [
+    {
+      "name": "accountId",
+      "type": "long",
+      "doc": "Unique identifier for the account"
+    },
+    {
+      "name": "cardEventType",
+      "type": "string",
+      "doc": "Type of the card event"
+    },
+    {
+      "name": "amount",
+      "type": "double",
+      "doc": "Transaction amount"
+    },
+    {
+      "name": "timestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      },
+      "doc": "Epoch timestamp of the event in milliseconds"
+    }
+  ]
+}
