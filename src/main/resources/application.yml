@@ -14,24 +14,29 @@ spring:
           destination: cards-events-avro-topic
           group: card-events-avro-group-2
           content-type: application/*+avro
-
+        cardEvents-out-0:
+          destination: cards-events-avro-topic
+          content-type: application/*+avro
       kafka:
         binder:
           brokers: localhost:9092
+          required-acks: all
           autoCreateTopics: false
-        producer-properties:
-          schema.registry.url: http://localhost:8081
-          key.serializer: org.apache.kafka.common.serialization.StringSerializer
-          value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-        consumer-properties:
-          schema.registry.url: http://localhost:8081
-          key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
-          value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-          specific.avro.reader: true
-        bindings:
-          logCardEvents-in-0:
-            consumer:
-              start-offset: earliest
+          producer-properties:
+            schema.registry.url: http://localhost:8081
+            key.serializer: org.apache.kafka.common.serialization.StringSerializer
+            value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+          consumer-properties:
+            schema.registry.url: http://localhost:8081
+            key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+            specific.avro.reader: true
+            auto.offset.reset: earliest
+#
+#          bindings:
+#            logCardEvents-in-0:
+#              consumer:
+#                start-offset: earliest
 
 
 
@@ -41,5 +46,7 @@ logging:
       springframework: INFO
       apache.kafka: INFO
       springframework.kafka: INFO
+      springframework.cloud.stream: DEBUG
+      springframework.cloud.function: DEBUG
 
 
