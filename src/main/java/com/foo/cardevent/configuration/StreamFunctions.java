@@ -52,18 +52,19 @@ public class StreamFunctions {
     /**
      * Generates sample card events periodically
      */
-    //    @Bean - Disabled
+    @Bean
     public Supplier<CardEvent> generateCardEvents() {
-        return () -> {
-            CardEvent event = new CardEvent(
-                    100L + randSeed.nextLong() * 900L,
-                    Math.random() > 0.5 ? CardEventType.CARD_ATM_DEPOSIT : CardEventType.CARD_ATM_WITHDRAWAL,
-                    Math.round(Math.random() * 10000) / 100.0,
-                    Instant.now().toEpochMilli()
-            );
-            log.info("Generated card event: {}", event);
-            return event;
-        };
+//        return () -> {
+//            CardEvent event = new CardEvent(
+//                    100L + randSeed.nextLong() * 900L,
+//                    Math.random() > 0.5 ? CardEventType.CARD_ATM_DEPOSIT : CardEventType.CARD_ATM_WITHDRAWAL,
+//                    Math.round(Math.random() * 10000) / 100.0,
+//                    Instant.now().toEpochMilli()
+//            );
+//            log.info("Generated card event: {}", event);
+//            return event;
+//        };
+        return () -> null;
     }
 
     /**

@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.foo.cardevent.processor</groupId>
-    <artifactId>sbk-cardevent-processor-json</artifactId>
+    <artifactId>sbk-cardevent-processor-scstreams-json</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sbk-cardevent-processor-json</name>
     <description>Demo project for Spring Boot</description>

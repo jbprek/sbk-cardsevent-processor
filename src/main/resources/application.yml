@@ -15,7 +15,7 @@ spring:
 
   cloud:
     function:
-      definition: logCardEvents # processCardEvents #;other functions
+      definition: logCardEvents;generateCardEvents # processCardEvents #;other functions
 
     stream:
       bindings:
@@ -24,6 +24,9 @@ spring:
           group: card-events-json-group-2
           content-type: application/json
         cardEvents-out-0:
+          destination: cards-events-json-topic
+          content-type: application/json
+        generateCardEvents-out-0:
           destination: cards-events-json-topic
           content-type: application/json
       kafka:
