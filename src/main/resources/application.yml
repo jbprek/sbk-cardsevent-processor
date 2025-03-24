@@ -6,7 +6,7 @@ spring:
 
   cloud:
     function:
-      definition: logCardEvents # processCardEvents #;other functions
+      definition: logCardEvents;generateCardEvents # processCardEvents #;other functions
 
     stream:
       bindings:
@@ -15,6 +15,9 @@ spring:
           group: card-events-avro-group-2
           content-type: application/*+avro
         cardEvents-out-0:
+          destination: cards-events-avro-topic
+          content-type: application/*+avro
+        generateCardEvents-out-0:
           destination: cards-events-avro-topic
           content-type: application/*+avro
       kafka:

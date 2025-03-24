@@ -9,7 +9,6 @@ import org.springframework.messaging.Message;
 import java.time.Instant;
 import java.util.Random;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -58,19 +57,19 @@ public class StreamFunctions {
     /**
      * Generates sample card events periodically
      */
-    //    @Bean - Disabled
-    //    public Supplier<CardEvent> generateCardEvents() {
-    //        return () -> {
-    //            CardEvent event = new CardEvent(
-    //                    100L + randSeed.nextLong() * 900L,
-    //                    Math.random() > 0.5 ? "CARD_ATM_DEPOSIT" : "CARD_ATM_WITHDRAWAL",
-    //                    Math.round(Math.random() * 10000) / 100.0,
-    //                    Instant.now()
-    //            );
-    //            log.info("Generated card event: {}", event);
-    //            return event;
-    //        };
-    //    }
+    @Bean
+    public Supplier<CardEvent> generateCardEvents() {
+        return () -> {
+            CardEvent event = new CardEvent(
+                    100L + randSeed.nextLong() * 900L,
+                    Math.random() > 0.5 ? "CARD_ATM_DEPOSIT" : "CARD_ATM_WITHDRAWAL",
+                    Math.round(Math.random() * 10000) / 100.0,
+                    Instant.now()
+            );
+            log.info("Generated card event: {}", event);
+            return event;
+        };
+    }
 
     /**
      * Function to filter high-value card transactions (amount > 100)
