@@ -15,19 +15,23 @@ spring:
 
   cloud:
     function:
-      definition: logCardEvents;generateCardEvents # processCardEvents #;other functions
+      definition: logCardEvents;processCardEvents # processCardEvents #;other functions
 
     stream:
       bindings:
+        rest-producer:
+          destination: cards-events-json-topic
+          content-type: application/json
         logCardEvents-in-0:
           destination: cards-events-json-topic
-          group: card-events-json-group-2
+          group: card-events-json-group-log
           content-type: application/json
-        cardEvents-out-0:
+        processCardEvents-in-0:
           destination: cards-events-json-topic
+          group: card-events-json-group-process
           content-type: application/json
-        generateCardEvents-out-0:
-          destination: cards-events-json-topic
+        processCardEvents-out-0:
+          destination: cards-events-filtered-json-topic
           content-type: application/json
       kafka:
         binder:

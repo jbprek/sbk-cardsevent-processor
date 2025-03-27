@@ -16,7 +16,6 @@ import java.util.function.Supplier;
 @Configuration
 public class StreamFunctions {
 
-    private final Random randSeed = new Random();
 
     /**
      * Consumes card events and logs them
@@ -29,7 +28,7 @@ public class StreamFunctions {
     /**
      * Processes card events and produces enriched events
      */
-    // @Bean
+    @Bean
     public Function<CardEvent, CardEvent> processCardEvents() {
         return cardEvent -> {
             log.info("Processing card event: {}", cardEvent);
@@ -52,18 +51,9 @@ public class StreamFunctions {
     /**
      * Generates sample card events periodically
      */
-    @Bean
+   // @Bean
     public Supplier<CardEvent> generateCardEvents() {
-//        return () -> {
-//            CardEvent event = new CardEvent(
-//                    100L + randSeed.nextLong() * 900L,
-//                    Math.random() > 0.5 ? CardEventType.CARD_ATM_DEPOSIT : CardEventType.CARD_ATM_WITHDRAWAL,
-//                    Math.round(Math.random() * 10000) / 100.0,
-//                    Instant.now().toEpochMilli()
-//            );
-//            log.info("Generated card event: {}", event);
-//            return event;
-//        };
+
         return () -> null;
     }
 
