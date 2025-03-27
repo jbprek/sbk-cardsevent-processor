@@ -1,55 +1,38 @@
-server:
-  port: 10001
 spring:
-  application:
-    name: sbk-card-event-processor-avro-scstreams
-
   cloud:
-    function:
-      definition: logCardEvents;generateCardEvents # processCardEvents #;other functions
-
     stream:
+      function:
+        definition: processUser;readUser
       bindings:
-        logCardEvents-in-0:
-          destination: cards-events-avro-topic
-          group: card-events-avro-group-2
-          content-type: application/*+avro
-        cardEvents-out-0:
-          destination: cards-events-avro-topic
-          content-type: application/*+avro
-        generateCardEvents-out-0:
-          destination: cards-events-avro-topic
-          content-type: application/*+avro
+        # Processing functions
+        processUser-in-0:
+          destination: user-topic
+          contentType: application/avro
+        processUser-out-0:
+          destination: avro-output
+          contentType: application/avro
+        readUser-in-0:
+          destination: user-topic
+          contentType: application/avro
+
+        # Direct binding for StreamBridge
+        direct-output:
+          destination: user-topic
+          producer:
+            useNativeEncoding: true
+          contentType: application/avro
+
+      # Schema registry and Kafka configuration
       kafka:
         binder:
           brokers: localhost:9092
-          required-acks: all
-          autoCreateTopics: false
+          schemaRegistryUrl: http://localhost:8081
           producer-properties:
-            schema.registry.url: http://localhost:8081
             key.serializer: org.apache.kafka.common.serialization.StringSerializer
             value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-          consumer-properties:
             schema.registry.url: http://localhost:8081
-            key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
-            value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-            specific.avro.reader: true
-            auto.offset.reset: earliest
-#
-#          bindings:
-#            logCardEvents-in-0:
-#              consumer:
-#                start-offset: earliest
-
-
-
-logging:
-  level:
-    org:
-      springframework: INFO
-      apache.kafka: INFO
-      springframework.kafka: INFO
-      springframework.cloud.stream: DEBUG
-      springframework.cloud.function: DEBUG
-
-
+        bindings:
+          direct-output:
+            producer:
+              configuration:
+                value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
