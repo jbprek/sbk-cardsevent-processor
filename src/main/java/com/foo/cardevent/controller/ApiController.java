@@ -25,15 +25,14 @@ public class ApiController {
 
     @PostMapping
     public void sendMessage(@RequestBody CardEventInput eventInput) {
-        final var event = cardEventMapper.fromInput(eventInput);
+        var event = cardEventMapper.fromInput(eventInput);
 
         if (event == null) {
             log.error("Mapping resulted in null for input: {}", eventInput);
             throw new IllegalArgumentException("Cannot send event: mapped event is null");
         }
 
-        final boolean result = this.streamBridge.send(CARD_EVENTS_BINDING, event);
-
+        final boolean result = this.streamBridge.send("rest-producer", event);
         if (!result) {
             log.error("Failed to send message to binding '{}', payload: {}", CARD_EVENTS_BINDING, event);
             throw new RuntimeException("Failed to send message to " + CARD_EVENTS_BINDING);

@@ -6,20 +6,24 @@ spring:
 
   cloud:
     function:
-      definition: logCardEvents;generateCardEvents # processCardEvents #;other functions
+      definition: logCardEvents;processCardEvents # processCardEvents #;other functions
 
     stream:
       bindings:
+        rest-producer:
+          destination: cards-events-avro-topic
+          content-type: application/json
         logCardEvents-in-0:
           destination: cards-events-avro-topic
           group: card-events-avro-group-2
           content-type: application/*+avro
-        cardEvents-out-0:
-          destination: cards-events-avro-topic
-          content-type: application/*+avro
-        generateCardEvents-out-0:
-          destination: cards-events-avro-topic
-          content-type: application/*+avro
+        processCardEvents-in-0:
+          destination: cards-events-json-topic
+          group: card-events-json-group-process
+          content-type: application/json
+        processCardEvents-out-0:
+          destination: cards-events-filtered-json-topic
+          content-type: application/json
       kafka:
         binder:
           brokers: localhost:9092
@@ -27,11 +31,9 @@ spring:
           autoCreateTopics: false
           producer-properties:
             schema.registry.url: http://localhost:8081
-            key.serializer: org.apache.kafka.common.serialization.StringSerializer
             value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
           consumer-properties:
             schema.registry.url: http://localhost:8081
-            key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
             value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
             specific.avro.reader: true
             auto.offset.reset: earliest

@@ -9,66 +9,52 @@ import org.springframework.messaging.Message;
 import java.time.Instant;
 import java.util.Random;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Slf4j
 @Configuration
 public class StreamFunctions {
 
-    private final Random randSeed = new Random();
 
     /**
      * Consumes card events and logs them
      */
     @Bean
     public Consumer<CardEvent> logCardEvents() {
-        return cardEventRecord -> log.info("Received card event: {}", cardEventRecord);
+        return cardEvent -> log.info("Received card event: {}", cardEvent);
     }
-
-    @Bean
-    public Supplier<Message<CardEvent>> cardEvents() {
-        return () -> null; // This is just a placeholder - StreamBridge will handle the actual sending
-    }
-
 
     /**
      * Processes card events and produces enriched events
      */
-    // @Bean
-    //    public Function<CardEvent, CardEvent> processCardEvents() {
-    //        return cardEventRecord -> {
-    //            log.info("Processing card event: {}", cardEventRecord);
-    //
-    //            // Apply some business logic based on the event type
-    //            if (cardEventRecord.getCardEventType() == "CARD_REFUND") {
-    //                // For demonstration purposes - create a processed event
-    //                return new CardEvent(
-    //                        cardEventRecord.getAccountId(),
-    //                        "CARD_REFUND",
-    //                        cardEventRecord.getAmount(),
-    //                        Instant.now()
-    //                );
-    //            }
-    //
-    //            return cardEventRecord;
-    //        };
-    //    }
+    @Bean
+    public Function<CardEvent, CardEvent> processCardEvents() {
+        return cardEvent -> {
+            log.info("Processing card event: {}", cardEvent);
+
+            // Apply some business logic based on the event type
+            if (cardEvent.cardEventType() == CardEventType.CARD_REFUND) {
+                // For demonstration purposes - create a processed event
+                return new CardEvent(
+                        cardEvent.accountId(),
+                        CardEventType.CARD_REFUND,
+                        cardEvent.amount(),
+                        Instant.now().toEpochMilli()
+                );
+            }
+
+            return cardEvent;
+        };
+    }
 
     /**
      * Generates sample card events periodically
      */
-    @Bean
+    // @Bean
     public Supplier<CardEvent> generateCardEvents() {
-        return () -> {
-            CardEvent event = new CardEvent(
-                    100L + randSeed.nextLong() * 900L,
-                    Math.random() > 0.5 ? "CARD_ATM_DEPOSIT" : "CARD_ATM_WITHDRAWAL",
-                    Math.round(Math.random() * 10000) / 100.0,
-                    Instant.now()
-            );
-            log.info("Generated card event: {}", event);
-            return event;
-        };
+
+        return () -> null;
     }
 
     /**
